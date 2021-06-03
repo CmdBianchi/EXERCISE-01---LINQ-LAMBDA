@@ -4,7 +4,6 @@ using Entities;
 using System.Collections.Generic;
 namespace EXERCISE_01___LINQ_LAMBDA {
     class Program {
-
         static void Print<T>(string message, IEnumerable<T> collection) {
             Console.WriteLine(message);
             foreach (T obj in collection) {
@@ -12,7 +11,6 @@ namespace EXERCISE_01___LINQ_LAMBDA {
             }
             Console.WriteLine();
         }
-
         static void Main(string[] args) {
             Category c1 = new Category() { Id = 1, Name = "Tools",Tier = 2 };
             Category c2 = new Category() { Id = 2, Name = "Computers", Tier = 1 };
@@ -70,8 +68,18 @@ namespace EXERCISE_01___LINQ_LAMBDA {
             Console.WriteLine("Caregory 1 Average Price: " + r13);
             var r14 = products.Where(p => p.Category.Id == 5).Select(p => p.Price).DefaultIfEmpty(0.0).Average();
             Console.WriteLine("Caregory 1 Average Price: " + r14);
+            var r15 = products.Where(p => p.Category.Id == 1).Select(p => p.Price).Aggregate(0.0, (x, y) => x + y);
+            Console.WriteLine("Category 1 aggregate  sum: " + r15);
+            Console.WriteLine();
 
-
+            var r16 = products.GroupBy(p => p.Category);
+            foreach(IGrouping<Category, Product>group in r16) {
+                Console.WriteLine("Catgegory " + group.Key.Name+":");
+                foreach(Product p in group) {
+                    Console.WriteLine(p);
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
